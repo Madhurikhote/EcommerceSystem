@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="EcommerceWebAPI/EcommerceWebAPI.csproj" />
+  <Project Path="Ecommerce_MVC/Ecommerce_MVC.csproj" Id="99f3f5dd-e2b0-4eeb-8144-2a300ea1f0b7" />
+</Solution>

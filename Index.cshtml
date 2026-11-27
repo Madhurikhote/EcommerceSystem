@@ -1,0 +1,143 @@
+﻿@model List<Ecommerce_MVC.Models.WishlistViewModel>
+
+@{
+    ViewData["Title"] = "My Wishlist";
+}
+
+<div class="wishlist-page">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="wishlist-header">
+
+        <div>
+            <h1 class="wishlist-title">
+                ❤️ My Wishlist
+            </h1>
+
+            <p class="wishlist-subtitle">
+                @Model.Count item(s) saved
+            </p>
+        </div>
+
+        <a asp-controller="Product"
+           asp-action="Index"
+           class="continue-shopping-btn">
+            ← Continue Shopping
+        </a>
+
+    </div>
+
+
+    <!-- ================= EMPTY WISHLIST ================= -->
+    @if (Model == null || !Model.Any())
+    {
+        <div class="empty-wishlist">
+
+            <div class="empty-heart">
+                ♡
+            </div>
+
+            <h2>Your Wishlist is Empty</h2>
+
+            <p>
+                Save your favourite products here and shop them later.
+            </p>
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="start-shopping-btn">
+                Start Shopping
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <!-- ================= WISHLIST GRID ================= -->
+
+        <div class="wishlist-grid">
+
+            @foreach (var item in Model)
+            {
+                <div class="wishlist-card">
+
+                    <!-- PRODUCT IMAGE -->
+
+                    <div class="wishlist-image-container">
+
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl"
+                                 class="wishlist-image"
+                                 alt="@item.ProductName"
+                                 onerror="this.src='/images/no-image.png';" />
+                        }
+                        else
+                        {
+                            <img src="/images/no-image.png"
+                                 class="wishlist-image"
+                                 alt="No Image" />
+                        }
+
+
+                        <!-- HEART -->
+
+                        <div class="wishlist-heart">
+                            ❤️
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRODUCT DETAILS -->
+
+                    <div class="wishlist-details">
+
+                        <h3 class="wishlist-product-name">
+                            @item.ProductName
+                        </h3>
+
+                        <div class="wishlist-price">
+                            ₹@item.Price.ToString("N2")
+                        </div>
+
+
+                        <!-- BUTTONS -->
+
+                        <div class="wishlist-actions">
+
+                            <a asp-controller="Product"
+                               asp-action="Details"
+                               asp-route-id="@item.ProductId"
+                               class="wishlist-view-btn">
+                                View Product
+                            </a>
+
+
+                            <form asp-controller="Wishlist"
+                                  asp-action="Remove"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@item.Id" />
+
+                                <button type="submit"
+                                        class="wishlist-remove-btn">
+                                    🗑 Remove
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

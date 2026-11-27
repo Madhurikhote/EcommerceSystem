@@ -1,0 +1,827 @@
+﻿@model Ecommerce_MVC.Models.SearchResult
+
+@{
+    ViewData["Title"] = "Search Products";
+
+    var keyword = Context.Request.Query["keyword"].ToString();
+    var selectedCategory = Context.Request.Query["category"].ToString();
+}
+
+<div class="search-page">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="search-header">
+
+        <div>
+
+            <div class="breadcrumb">
+                Home / Products / Search
+            </div>
+
+            <h1>
+                Search Products
+            </h1>
+
+            <p>
+                Find the perfect product for you
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SEARCH BOX ================= -->
+
+    <div class="search-box-card">
+
+        <form asp-controller="Product"
+              asp-action="Search"
+              method="get">
+
+            <div class="search-input-wrapper">
+
+                <span class="search-icon">
+                    🔍
+                </span>
+
+                <input type="text"
+                       name="keyword"
+                       value="@keyword"
+                       placeholder="Search products by name, brand..."
+                       autocomplete="off" />
+
+            </div>
+
+
+            <div class="category-wrapper">
+
+                <select name="category">
+
+                    @if (string.IsNullOrEmpty(selectedCategory))
+                    {
+                        <option value="" selected>
+                            All Categories
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="@selectedCategory" selected>
+                            @selectedCategory
+                        </option>
+                    }
+
+                </select>
+
+            </div>
+
+
+            <button type="submit"
+                    class="search-submit">
+
+                Search
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ================= RESULT INFO ================= -->
+    @if (Model != null && Model.Data != null && Model.Data.Any())
+    {
+
+        <div class="result-header">
+
+            <div>
+
+                <strong>
+                    @Model.Total
+                </strong>
+
+                products found
+
+            </div>
+
+
+            @if (!string.IsNullOrEmpty(keyword))
+            {
+
+                <div class="search-for">
+
+                    Results for:
+
+                    <strong>
+                        "@keyword"
+                    </strong>
+
+                </div>
+
+            }
+
+
+            @if (!string.IsNullOrEmpty(selectedCategory))
+            {
+
+                <div class="search-for">
+
+                    Category:
+
+                    <strong>
+                        "@selectedCategory"
+                    </strong>
+
+                </div>
+
+            }
+
+        </div>
+
+
+        <!-- ================= PRODUCTS ================= -->
+
+        <div class="search-product-grid">
+
+            @foreach (var product in Model.Data)
+            {
+
+                <div class="search-product-card">
+
+
+                    <!-- ================= IMAGE ================= -->
+
+                    <div class="search-product-image">
+
+
+                        <!-- WISHLIST -->
+
+                        <div class="search-wishlist">
+
+                            <form asp-controller="Wishlist"
+                                  asp-action="Add"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="productId"
+                                       value="@product.ProductId" />
+
+                                <input type="hidden"
+                                       name="productName"
+                                       value="@product.Name" />
+
+                                <input type="hidden"
+                                       name="price"
+                                       value="@product.Price" />
+
+                                <input type="hidden"
+                                       name="imageUrl"
+                                       value="@product.ImageUrl" />
+
+                                <button type="submit"
+                                        title="Add to Wishlist">
+
+                                    ♡
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+
+                        <!-- PRODUCT IMAGE -->
+
+                        <a asp-controller="Product"
+                           asp-action="Details"
+                           asp-route-id="@product.ProductId">
+
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl"
+                                     alt="@product.Name"
+                                     onerror="this.src='/images/no-image.png';" />
+                            }
+                            else
+                            {
+                                <img src="/images/no-image.png"
+                                     alt="No Image" />
+                            }
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- ================= DETAILS ================= -->
+
+                    <div class="search-product-info">
+
+
+                        <!-- BRAND -->
+                        @if (!string.IsNullOrEmpty(product.Brand))
+                        {
+                            <span class="brand">
+                                @product.Brand
+                            </span>
+                        }
+
+
+                        <!-- PRODUCT NAME -->
+
+                        <a asp-controller="Product"
+                           asp-action="Details"
+                           asp-route-id="@product.ProductId"
+                           class="product-name">
+
+                            @product.Name
+
+                        </a>
+
+
+                        <!-- CATEGORY -->
+
+                        <span class="category">
+                            @product.Category
+                        </span>
+
+
+                        <!-- RATING -->
+
+                        <div class="rating-row">
+
+                            <span class="rating">
+                                ⭐ @product.Rating.ToString("0.0")
+                            </span>
+
+                            <span>
+                                Customer Rating
+                            </span>
+
+                        </div>
+
+
+                        <!-- PRICE -->
+
+                        <div class="price">
+
+                            ₹@product.Price.ToString("N2")
+
+                        </div>
+
+
+                        <!-- STOCK -->
+                        @if (product.Stock > 0)
+                        {
+
+                            <span class="in-stock">
+                                ✓ In Stock
+                            </span>
+
+                        }
+                        else
+                        {
+
+                            <span class="out-stock">
+                                ✕ Out of Stock
+                            </span>
+
+                        }
+
+
+                        <!-- ================= ACTIONS ================= -->
+
+                        <div class="search-actions">
+
+
+                            <!-- DETAILS -->
+
+                            <a asp-controller="Product"
+                               asp-action="Details"
+                               asp-route-id="@product.ProductId"
+                               class="details-button">
+
+                                View Details
+
+                            </a>
+
+
+                            <!-- CART -->
+                            @if (product.Stock > 0)
+                            {
+
+                                <form asp-controller="Cart"
+                                      asp-action="AddToCart"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="productId"
+                                           value="@product.ProductId" />
+
+                                    <input type="hidden"
+                                           name="quantity"
+                                           value="1" />
+
+                                    <button type="submit"
+                                            class="cart-button">
+
+                                        🛒 Add to Cart
+
+                                    </button>
+
+                                </form>
+
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+    }
+    else
+    {
+
+        <!-- ================= NO RESULT ================= -->
+
+        <div class="no-results">
+
+            <div class="no-result-icon">
+                🔍
+            </div>
+
+            <h2>
+                No Products Found
+            </h2>
+
+            @if (!string.IsNullOrEmpty(selectedCategory))
+            {
+                <p>
+                    No products found in
+                    <strong>@selectedCategory</strong>.
+                </p>
+            }
+            else if (!string.IsNullOrEmpty(keyword))
+            {
+                <p>
+                    We couldn't find products matching
+                    "<strong>@keyword</strong>".
+                </p>
+            }
+            else
+            {
+                <p>
+                    We couldn't find any products.
+                </p>
+            }
+
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="browse-button">
+
+                Browse All Products
+
+            </a>
+
+        </div>
+
+    }
+
+</div>
+
+
+<style>
+
+    /* ================= PAGE ================= */
+
+    .search-page {
+        max-width: 1350px;
+        margin: auto;
+        padding: 40px 25px 60px;
+    }
+
+
+    /* ================= HEADER ================= */
+
+    .search-header {
+        margin-bottom: 25px;
+    }
+
+    .breadcrumb {
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 8px;
+    }
+
+    .search-header h1 {
+        font-size: 32px;
+        font-weight: 800;
+        margin-bottom: 5px;
+        color: #151515;
+    }
+
+    .search-header p {
+        color: #777;
+        margin: 0;
+    }
+
+
+    /* ================= SEARCH CARD ================= */
+
+    .search-box-card {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 14px;
+        padding: 18px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,.04);
+    }
+
+        .search-box-card form {
+            display: flex;
+            gap: 12px;
+        }
+
+
+    /* ================= INPUT ================= */
+
+    .search-input-wrapper {
+        flex: 1;
+        height: 48px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        background: #fafafa;
+    }
+
+    .search-icon {
+        padding-left: 15px;
+    }
+
+    .search-input-wrapper input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 0 12px;
+        font-size: 14px;
+    }
+
+
+    /* ================= CATEGORY ================= */
+
+    .category-wrapper select {
+        height: 48px;
+        min-width: 180px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0 12px;
+        outline: none;
+        background: white;
+    }
+
+
+    /* ================= SEARCH BUTTON ================= */
+
+    .search-submit {
+        height: 48px;
+        padding: 0 25px;
+        border: none;
+        border-radius: 8px;
+        background: #111;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .search-submit:hover {
+            background: #333;
+        }
+
+
+    /* ================= RESULT ================= */
+
+    .result-header {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 13px 17px;
+        margin-bottom: 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+        .result-header strong {
+            color: #111;
+        }
+
+    .search-for {
+        color: #777;
+    }
+
+
+    /* ================= GRID ================= */
+
+    .search-product-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px;
+    }
+
+
+    /* ================= CARD ================= */
+
+    .search-product-card {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 14px;
+        overflow: hidden;
+        transition: .25s;
+    }
+
+        .search-product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,.09);
+        }
+
+
+    /* ================= IMAGE ================= */
+
+    .search-product-image {
+        height: 260px;
+        background: #f8f8f8;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .search-product-image a {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 18px;
+            transition: .3s;
+        }
+
+    .search-product-card:hover img {
+        transform: scale(1.05);
+    }
+
+
+    /* ================= WISHLIST ================= */
+
+    .search-wishlist {
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        z-index: 5;
+    }
+
+        .search-wishlist button {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 21px;
+            cursor: pointer;
+        }
+
+            .search-wishlist button:hover {
+                background: #111;
+                color: white;
+            }
+
+
+    /* ================= INFO ================= */
+
+    .search-product-info {
+        padding: 17px;
+    }
+
+    .brand {
+        display: block;
+        color: #888;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .product-name {
+        display: block;
+        color: #222;
+        text-decoration: none;
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+        .product-name:hover {
+            color: #666;
+        }
+
+    .category {
+        display: block;
+        color: #999;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+
+    /* ================= RATING ================= */
+
+    .rating-row {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #999;
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+
+    .rating {
+        background: #111;
+        color: white;
+        padding: 4px 7px;
+        border-radius: 5px;
+        font-size: 12px;
+    }
+
+
+    /* ================= PRICE ================= */
+
+    .price {
+        font-size: 21px;
+        font-weight: 800;
+        color: #111;
+        margin-bottom: 8px;
+    }
+
+    .in-stock {
+        color: #16803c;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .out-stock {
+        color: #c62828;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+
+    /* ================= ACTIONS ================= */
+
+    .search-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 14px;
+    }
+
+        .search-actions form {
+            width: 100%;
+        }
+
+    .details-button {
+        text-align: center;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        color: #222;
+        padding: 9px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .details-button:hover {
+            background: #f5f5f5;
+            color: #111;
+        }
+
+    .cart-button {
+        width: 100%;
+        border: none;
+        background: #111;
+        color: white;
+        padding: 10px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .cart-button:hover {
+            background: #333;
+        }
+
+
+    /* ================= EMPTY ================= */
+
+    .no-results {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 14px;
+        text-align: center;
+        padding: 80px 20px;
+    }
+
+    .no-result-icon {
+        font-size: 55px;
+        margin-bottom: 15px;
+    }
+
+    .no-results h2 {
+        font-weight: 700;
+    }
+
+    .no-results p {
+        color: #888;
+    }
+
+    .browse-button {
+        display: inline-block;
+        background: #111;
+        color: white;
+        text-decoration: none;
+        padding: 11px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        margin-top: 10px;
+    }
+
+        .browse-button:hover {
+            color: white;
+            background: #333;
+        }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 1100px) {
+
+        .search-product-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+
+    @@media (max-width: 800px) {
+
+        .search-box-card form {
+            flex-direction: column;
+        }
+
+        .category-wrapper select {
+            width: 100%;
+        }
+
+        .search-product-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+
+    @@media (max-width: 520px) {
+
+        .search-page {
+            padding: 25px 15px;
+        }
+
+        .search-header h1 {
+            font-size: 26px;
+        }
+
+        .result-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .search-product-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>

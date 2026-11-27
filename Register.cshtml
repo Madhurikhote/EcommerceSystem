@@ -1,0 +1,692 @@
+﻿@model Ecommerce_MVC.Models.RegisterModel
+
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="auth-page">
+
+    <div class="auth-container register-container">
+
+        <!-- ================= LEFT SIDE ================= -->
+
+        <div class="auth-left">
+
+            <div class="auth-brand">
+                <span class="brand-icon">🛍️</span>
+                <span>Ecommerce</span>
+            </div>
+
+            <div class="auth-left-content">
+
+                <div class="shopping-icon">
+                    ✨
+                </div>
+
+                <h1>
+                    Join Us Today!
+                </h1>
+
+                <p>
+                    Create your account and start discovering
+                    amazing products at the best prices.
+                </p>
+
+                <div class="auth-features">
+
+                    <div class="feature-item">
+                        <span>✓</span>
+                        <div>
+                            <strong>Easy Shopping</strong>
+                            <small>Browse your favorite products</small>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <span>✓</span>
+                        <div>
+                            <strong>Wishlist</strong>
+                            <small>Save products for later</small>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <span>✓</span>
+                        <div>
+                            <strong>Track Orders</strong>
+                            <small>Manage your orders easily</small>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <span>✓</span>
+                        <div>
+                            <strong>Secure Shopping</strong>
+                            <small>Safe and secure checkout</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= RIGHT SIDE ================= -->
+
+        <div class="auth-right">
+
+            <div class="register-card">
+
+                <!-- HEADER -->
+
+                <div class="register-header">
+
+                    <div class="register-icon">
+                        👤
+                    </div>
+
+                    <h2>
+                        Create Account
+                    </h2>
+
+                    <p>
+                        Enter your details to get started
+                    </p>
+
+                </div>
+
+
+                <!-- FORM -->
+
+                <form asp-controller="User"
+                      asp-action="Register"
+                      method="post">
+
+                    <!-- VALIDATION -->
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="validation-summary">
+                    </div>
+
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label asp-for="Name">
+                            Full Name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                👤
+                            </span>
+
+                            <input asp-for="Name"
+                                   class="auth-input"
+                                   placeholder="Enter your full name"
+                                   autocomplete="name" />
+
+                        </div>
+
+                        <span asp-validation-for="Name"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label asp-for="Email">
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ✉️
+                            </span>
+
+                            <input asp-for="Email"
+                                   class="auth-input"
+                                   placeholder="Enter your email"
+                                   autocomplete="email" />
+
+                        </div>
+
+                        <span asp-validation-for="Email"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+
+                    <!-- GENDER -->
+
+                    <div class="form-group">
+
+                        <label asp-for="Gender">
+                            Gender
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ⚥
+                            </span>
+
+                            <select asp-for="Gender"
+                                    class="auth-input auth-select">
+
+                                <option value="">
+                                    Select Gender
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <span asp-validation-for="Gender"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label asp-for="Password">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            <input asp-for="Password"
+                                   type="password"
+                                   class="auth-input"
+                                   placeholder="Create a password"
+                                   autocomplete="new-password" />
+
+                        </div>
+
+                        <span asp-validation-for="Password"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label asp-for="ConfirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔐
+                            </span>
+
+                            <input asp-for="ConfirmPassword"
+                                   type="password"
+                                   class="auth-input"
+                                   placeholder="Confirm your password"
+                                   autocomplete="new-password" />
+
+                        </div>
+
+                        <span asp-validation-for="ConfirmPassword"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+
+                    <!-- REGISTER BUTTON -->
+
+                    <button type="submit"
+                            class="register-submit">
+
+                        <span>
+                            Create Account
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <!-- LOGIN -->
+
+                    <div class="login-link">
+
+                        <span>
+                            Already have an account?
+                        </span>
+
+                        <a asp-controller="User"
+                           asp-action="Login">
+
+                            Login
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    /* ================= PAGE ================= */
+
+    .auth-page {
+        min-height: calc(100vh - 140px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 45px 20px;
+        background: #f7f8fa;
+    }
+
+
+    /* ================= CONTAINER ================= */
+
+    .auth-container {
+        width: 100%;
+        max-width: 1050px;
+        min-height: 650px;
+        display: grid;
+        grid-template-columns: 45% 55%;
+        background: white;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.08);
+    }
+
+
+    /* ================= LEFT ================= */
+
+    .auth-left {
+        background: linear-gradient( 145deg, #111827, #1f2937 );
+        color: white;
+        padding: 45px;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .auth-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 23px;
+        font-weight: 700;
+    }
+
+
+    .brand-icon {
+        font-size: 30px;
+    }
+
+
+    .auth-left-content {
+        margin-top: 70px;
+    }
+
+
+    .shopping-icon {
+        width: 75px;
+        height: 75px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 38px;
+        margin-bottom: 25px;
+    }
+
+
+    .auth-left-content h1 {
+        font-size: 38px;
+        font-weight: 750;
+        margin-bottom: 15px;
+    }
+
+
+    .auth-left-content > p {
+        color: #d1d5db;
+        line-height: 1.7;
+        max-width: 390px;
+        font-size: 15px;
+    }
+
+
+    /* ================= FEATURES ================= */
+
+    .auth-features {
+        margin-top: 35px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+
+        .feature-item > span {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+
+        .feature-item strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+
+        .feature-item small {
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+
+    /* ================= RIGHT ================= */
+
+    .auth-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 45px 50px;
+    }
+
+
+    .register-card {
+        width: 100%;
+        max-width: 430px;
+    }
+
+
+    /* ================= HEADER ================= */
+
+    .register-header {
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+
+    .register-icon {
+        width: 62px;
+        height: 62px;
+        margin: 0 auto 16px;
+        border-radius: 18px;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+    }
+
+
+    .register-header h2 {
+        font-size: 30px;
+        font-weight: 750;
+        margin-bottom: 8px;
+    }
+
+
+    .register-header p {
+        color: #777;
+        font-size: 14px;
+        margin: 0;
+    }
+
+
+    /* ================= FORM ================= */
+
+    .form-group {
+        margin-bottom: 17px;
+    }
+
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 7px;
+            color: #333;
+        }
+
+
+    .input-wrapper {
+        position: relative;
+    }
+
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        z-index: 2;
+    }
+
+
+    .auth-input {
+        width: 100%;
+        height: 50px;
+        border: 1px solid #ddd;
+        border-radius: 11px;
+        padding: 0 15px 0 45px;
+        font-size: 14px;
+        outline: none;
+        transition: 0.2s;
+        box-sizing: border-box;
+        background: white;
+    }
+
+
+        .auth-input:focus {
+            border-color: #111;
+            box-shadow: 0 0 0 3px rgba(17,17,17,0.08);
+        }
+
+
+        .auth-input::placeholder {
+            color: #aaa;
+        }
+
+
+    /* SELECT */
+
+    .auth-select {
+        appearance: auto;
+        cursor: pointer;
+        padding-right: 15px;
+    }
+
+
+    /* ================= VALIDATION ================= */
+
+    .field-error {
+        display: block;
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+
+    .validation-summary {
+        color: #dc3545;
+        background: #fff5f5;
+        border: 1px solid #ffd6d6;
+        border-radius: 8px;
+        padding: 9px 12px;
+        margin-bottom: 18px;
+        font-size: 13px;
+    }
+
+
+        .validation-summary:empty {
+            display: none;
+        }
+
+
+    /* ================= BUTTON ================= */
+
+    .register-submit {
+        width: 100%;
+        height: 52px;
+        border: none;
+        border-radius: 11px;
+        background: #111;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s;
+        margin-top: 5px;
+    }
+
+
+        .register-submit:hover {
+            background: #333;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+
+        .register-submit span:last-child {
+            font-size: 20px;
+        }
+
+
+    /* ================= LOGIN LINK ================= */
+
+    .login-link {
+        text-align: center;
+        margin-top: 22px;
+        font-size: 14px;
+        color: #777;
+    }
+
+
+        .login-link a {
+            color: #111;
+            font-weight: 700;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+
+            .login-link a:hover {
+                text-decoration: underline;
+            }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 850px) {
+
+        .auth-container {
+            grid-template-columns: 1fr;
+            max-width: 600px;
+        }
+
+        .auth-left {
+            display: none;
+        }
+
+        .auth-right {
+            padding: 45px 30px;
+        }
+    }
+
+
+    @@media (max-width: 500px) {
+
+        .auth-page {
+            padding: 25px 15px;
+        }
+
+        .auth-container {
+            border-radius: 18px;
+        }
+
+        .auth-right {
+            padding: 35px 22px;
+        }
+
+        .register-header h2 {
+            font-size: 26px;
+        }
+    }
+
+</style>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
+
+}

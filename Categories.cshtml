@@ -1,0 +1,121 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div class="categories-page">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="categories-header">
+
+        <div>
+            <h1 class="categories-title">
+                Shop By Category
+            </h1>
+
+            <p class="categories-subtitle">
+                Explore products from different categories
+            </p>
+        </div>
+
+        <a asp-controller="Product"
+           asp-action="Index"
+           class="back-products-btn">
+            ← All Products
+        </a>
+
+    </div>
+
+
+    <!-- ================= CATEGORY GRID ================= -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="category-grid">
+
+            @foreach (var category in Model)
+            {
+                <a asp-controller="Product"
+                   asp-action="Search"
+                   asp-route-category="@category"
+                   class="category-card">
+
+                    <div class="category-icon">
+
+                        @if (category.ToLower().Contains("mobile"))
+                        {
+                            <span>📱</span>
+                        }
+                        else if (category.ToLower().Contains("laptop"))
+                        {
+                            <span>💻</span>
+                        }
+                        else if (category.ToLower().Contains("tv"))
+                        {
+                            <span>📺</span>
+                        }
+                        else if (category.ToLower().Contains("cloth"))
+                        {
+                            <span>👕</span>
+                        }
+                        else if (category.ToLower().Contains("shoe"))
+                        {
+                            <span>👟</span>
+                        }
+                        else if (category.ToLower().Contains("electronic"))
+                        {
+                            <span>🎧</span>
+                        }
+                        else if (category.ToLower().Contains("book"))
+                        {
+                            <span>📚</span>
+                        }
+                        else if (category.ToLower().Contains("home"))
+                        {
+                            <span>🏠</span>
+                        }
+                        else
+                        {
+                            <span>🛍️</span>
+                        }
+
+                    </div>
+
+                    <div class="category-name">
+                        @category
+                    </div>
+
+                    <div class="category-explore">
+                        Explore Products →
+                    </div>
+
+                </a>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="empty-categories">
+
+            <div class="empty-category-icon">
+                🛍️
+            </div>
+
+            <h2>No Categories Found</h2>
+
+            <p>
+                Categories will appear here once products are added.
+            </p>
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="continue-shopping-btn">
+                Browse Products
+            </a>
+
+        </div>
+    }
+
+</div>

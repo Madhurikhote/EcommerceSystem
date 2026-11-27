@@ -1,0 +1,687 @@
+﻿@model List<Ecommerce_MVC.Models.OrderViewModel>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<div class="orders-page">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="orders-header">
+
+        <div>
+            <h1 class="orders-title">
+                My Orders
+            </h1>
+
+            <p class="orders-subtitle">
+                Track and manage all your orders
+            </p>
+        </div>
+
+        <a asp-controller="Product"
+           asp-action="Index"
+           class="continue-shopping-btn">
+            🛍 Continue Shopping
+        </a>
+
+    </div>
+
+
+    <!-- ================= EMPTY ORDERS ================= -->
+    @if (Model == null || !Model.Any())
+    {
+        <div class="empty-orders">
+
+            <div class="empty-orders-icon">
+                📦
+            </div>
+
+            <h2>
+                No Orders Yet
+            </h2>
+
+            <p>
+                You haven't placed any orders yet.
+                Start shopping and your orders will appear here.
+            </p>
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="start-shopping-btn">
+                Start Shopping
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <!-- ================= ORDER LIST ================= -->
+
+        <div class="orders-list">
+
+            @foreach (var order in Model.OrderByDescending(x => x.OrderDate))
+            {
+                <div class="order-card">
+
+                    <!-- ================= ORDER HEADER ================= -->
+
+                    <div class="order-top">
+
+                        <div class="order-info">
+
+                            <div class="order-number">
+                                Order #@order.Id
+                            </div>
+
+                            <div class="order-date">
+                                Placed on
+                                @order.OrderDate.ToString("dd MMM yyyy, hh:mm tt")
+                            </div>
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="order-status">
+
+                            @if (order.Status == "Delivered")
+                            {
+                                <span class="status delivered">
+                                    ✓ Delivered
+                                </span>
+                            }
+                            else if (order.Status == "Shipped")
+                            {
+                                <span class="status shipped">
+                                    🚚 Shipped
+                                </span>
+                            }
+                            else if (order.Status == "Confirmed")
+                            {
+                                <span class="status confirmed">
+                                    ✓ Confirmed
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="status pending">
+                                    ⏳ Pending
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================= ORDER ITEMS ================= -->
+
+                    <div class="order-items">
+
+                        @foreach (var item in order.Items)
+                        {
+                            <div class="order-item">
+
+                                <!-- PRODUCT IMAGE -->
+
+                                <div class="order-product-image">
+
+                                    <img src="@item.ImageUrl"
+                                         alt="@item.ProductName"
+                                         onerror="this.src='/images/no-image.png';" />
+
+                                </div>
+
+
+                                <!-- PRODUCT DETAILS -->
+
+                                <div class="order-product-details">
+
+                                    <h3>
+                                        @item.ProductName
+                                    </h3>
+
+                                    <div class="product-meta">
+
+                                        <span>
+                                            Qty: @item.Quantity
+                                        </span>
+
+                                        <span class="separator">
+                                            |
+                                        </span>
+
+                                        <span>
+                                            ₹@item.Price.ToString("N2")
+                                        </span>
+
+                                    </div>
+
+                                    <div class="item-total">
+                                        Total:
+                                        <strong>
+                                            ₹@item.Total.ToString("N2")
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+
+                                <!-- VIEW PRODUCT -->
+
+                                <div class="order-product-action">
+
+                                    <a asp-controller="Product"
+                                       asp-action="Details"
+                                       asp-route-id="@item.ProductId"
+                                       class="view-product-btn">
+                                        View Product
+                                    </a>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+
+                    <!-- ================= ORDER FOOTER ================= -->
+
+                    <div class="order-bottom">
+
+                        <div class="order-total-label">
+                            Total Amount
+                        </div>
+
+                        <div class="order-total">
+                            ₹@order.TotalAmount.ToString("N2")
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
+
+
+<style>
+
+    /* =========================================
+           PAGE
+           ========================================= */
+
+    .orders-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 35px 20px 60px;
+        background: #f7f7f7;
+        min-height: 80vh;
+    }
+
+
+    /* =========================================
+           HEADER
+           ========================================= */
+
+    .orders-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 28px;
+        background: #ffffff;
+        padding: 25px 28px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .orders-title {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #222;
+    }
+
+    .orders-subtitle {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+
+    /* =========================================
+           CONTINUE SHOPPING
+           ========================================= */
+
+    .continue-shopping-btn {
+        text-decoration: none;
+        background: #2874f0;
+        color: white;
+        padding: 11px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .continue-shopping-btn:hover {
+            background: #1765dc;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+
+    /* =========================================
+           ORDER CARD
+           ========================================= */
+
+    .orders-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .order-card {
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        border: 1px solid #eeeeee;
+        transition: 0.2s ease;
+    }
+
+        .order-card:hover {
+            box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+        }
+
+
+    /* =========================================
+           ORDER TOP
+           ========================================= */
+
+    .order-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 22px;
+        background: #fafafa;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .order-number {
+        font-size: 17px;
+        font-weight: 700;
+        color: #222;
+    }
+
+    .order-date {
+        margin-top: 5px;
+        font-size: 13px;
+        color: #777;
+    }
+
+
+    /* =========================================
+           STATUS
+           ========================================= */
+
+    .status {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .status.delivered {
+            background: #e8f7ee;
+            color: #198754;
+        }
+
+        .status.shipped {
+            background: #e8f1ff;
+            color: #2874f0;
+        }
+
+        .status.confirmed {
+            background: #fff4df;
+            color: #d68910;
+        }
+
+        .status.pending {
+            background: #f2f2f2;
+            color: #666;
+        }
+
+
+    /* =========================================
+           ORDER ITEMS
+           ========================================= */
+
+    .order-items {
+        padding: 5px 22px;
+    }
+
+    .order-item {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 20px 0;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+
+    /* =========================================
+           PRODUCT IMAGE
+           ========================================= */
+
+    .order-product-image {
+        width: 110px;
+        height: 110px;
+        flex-shrink: 0;
+        background: #f8f8f8;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 1px solid #eeeeee;
+    }
+
+        .order-product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+            transition: transform 0.25s ease;
+        }
+
+    .order-item:hover .order-product-image img {
+        transform: scale(1.05);
+    }
+
+
+    /* =========================================
+           PRODUCT DETAILS
+           ========================================= */
+
+    .order-product-details {
+        flex: 1;
+        min-width: 0;
+    }
+
+        .order-product-details h3 {
+            margin: 0 0 9px;
+            font-size: 17px;
+            font-weight: 600;
+            color: #222;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+    .product-meta {
+        display: flex;
+        gap: 10px;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 9px;
+    }
+
+    .separator {
+        color: #ccc;
+    }
+
+    .item-total {
+        font-size: 14px;
+        color: #555;
+    }
+
+        .item-total strong {
+            color: #222;
+        }
+
+
+    /* =========================================
+           VIEW PRODUCT
+           ========================================= */
+
+    .order-product-action {
+        min-width: 125px;
+        text-align: right;
+    }
+
+    .view-product-btn {
+        display: inline-block;
+        text-decoration: none;
+        color: #2874f0;
+        border: 1px solid #2874f0;
+        padding: 9px 14px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .view-product-btn:hover {
+            background: #2874f0;
+            color: white;
+        }
+
+
+    /* =========================================
+           ORDER BOTTOM
+           ========================================= */
+
+    .order-bottom {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 15px;
+        padding: 17px 22px;
+        background: #fafafa;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .order-total-label {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .order-total {
+        font-size: 20px;
+        font-weight: 700;
+        color: #222;
+    }
+
+
+    /* =========================================
+           EMPTY ORDERS
+           ========================================= */
+
+    .empty-orders {
+        background: white;
+        text-align: center;
+        padding: 80px 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .empty-orders-icon {
+        font-size: 70px;
+        margin-bottom: 20px;
+    }
+
+    .empty-orders h2 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .empty-orders p {
+        color: #777;
+        max-width: 450px;
+        margin: 0 auto 25px;
+        line-height: 1.6;
+    }
+
+    .start-shopping-btn {
+        display: inline-block;
+        text-decoration: none;
+        background: #2874f0;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+        .start-shopping-btn:hover {
+            background: #1765dc;
+            color: white;
+        }
+
+
+    /* =========================================
+           TABLET
+           ========================================= */
+
+    @@media (max-width: 768px) {
+
+        .orders-page {
+            padding: 20px 12px 40px;
+        }
+
+        .orders-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .orders-title {
+            font-size: 25px;
+        }
+
+        .continue-shopping-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .order-top {
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .order-item {
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .order-product-details {
+            flex: 1;
+        }
+
+        .order-product-action {
+            width: 100%;
+            text-align: left;
+            margin-left: 130px;
+        }
+
+        .view-product-btn {
+            width: auto;
+        }
+    }
+
+
+    /* =========================================
+           MOBILE
+           ========================================= */
+
+    @@media (max-width: 500px) {
+
+        .orders-header {
+            padding: 20px;
+        }
+
+        .orders-title {
+            font-size: 23px;
+        }
+
+        .order-top {
+            flex-direction: column;
+            padding: 16px;
+        }
+
+        .order-status {
+            width: 100%;
+        }
+
+        .status {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .order-items {
+            padding: 5px 15px;
+        }
+
+        .order-item {
+            gap: 12px;
+        }
+
+        .order-product-image {
+            width: 85px;
+            height: 85px;
+        }
+
+        .order-product-details {
+            width: calc(100% - 100px);
+        }
+
+            .order-product-details h3 {
+                font-size: 15px;
+            }
+
+        .product-meta {
+            font-size: 12px;
+        }
+
+        .item-total {
+            font-size: 12px;
+        }
+
+        .order-product-action {
+            margin-left: 0;
+        }
+
+        .view-product-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .order-bottom {
+            padding: 15px;
+        }
+
+        .order-total {
+            font-size: 18px;
+        }
+
+        .empty-orders {
+            padding: 60px 15px;
+        }
+    }
+
+</style>

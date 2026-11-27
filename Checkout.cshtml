@@ -1,0 +1,925 @@
+﻿@model Ecommerce_MVC.Models.CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="checkout-page">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="checkout-header">
+
+        <div>
+            <h1>Checkout</h1>
+            <p>Complete your order securely</p>
+        </div>
+
+        <a asp-controller="Cart"
+           asp-action="Index"
+           class="back-cart-btn">
+            ← Back to Cart
+        </a>
+
+    </div>
+
+
+    <form asp-controller="Order"
+          asp-action="PlaceOrder"
+          method="post">
+
+        <div class="checkout-layout">
+
+            <!-- ================================================= -->
+            <!-- LEFT SIDE -->
+            <!-- ================================================= -->
+
+            <div class="checkout-left">
+
+                <!-- ================= ADDRESS ================= -->
+
+                <div class="checkout-card">
+
+                    <div class="checkout-card-header">
+
+                        <div>
+                            <div class="section-title">
+                                📍 Delivery Address
+                            </div>
+
+                            <div class="section-subtitle">
+                                Select an address for delivery
+                            </div>
+                        </div>
+
+                        <a asp-controller="Address"
+                           asp-action="Add"
+                           class="add-address-btn">
+                            + Add New
+                        </a>
+
+                    </div>
+
+
+                    @if (Model.Addresses != null && Model.Addresses.Any())
+                    {
+                        <div class="address-list">
+
+                            @foreach (var address in Model.Addresses)
+                            {
+                                <div class="address-wrapper">
+
+                                    <label class="address-card">
+
+                                        <input type="radio"
+                                               name="addressId"
+                                               value="@address.Id"
+                                               required />
+
+                                        <div class="address-content">
+
+                                            <div class="address-heading">
+
+                                                <div class="address-name">
+                                                    @address.FullName
+                                                </div>
+
+                                                @if (address.IsDefault)
+                                                {
+                                                    <span class="default-badge">
+                                                        Default
+                                                    </span>
+                                                }
+
+                                            </div>
+
+
+                                            <div class="address-mobile">
+                                                📱 @address.MobileNumber
+                                            </div>
+
+
+                                            <div class="address-text">
+
+                                                @address.AddressLine1
+
+                                                @if (!string.IsNullOrWhiteSpace(address.AddressLine2))
+                                                {
+                                                    <span>
+                                                        , @address.AddressLine2
+                                                    </span>
+                                                }
+
+                                                <br />
+
+                                                @address.City,
+                                                @address.State -
+                                                @address.PostalCode
+
+                                                <br />
+
+                                                @address.Country
+
+                                            </div>
+
+                                        </div>
+
+                                    </label>
+
+
+                                    <!-- ADDRESS ACTIONS -->
+
+                                    <div class="address-actions">
+
+                                        <a asp-controller="Address"
+                                           asp-action="Edit"
+                                           asp-route-id="@address.Id"
+                                           class="edit-address-btn">
+
+                                            ✏️ Edit
+
+                                        </a>
+
+
+                                        <a asp-controller="Address"
+                                           asp-action="Delete"
+                                           asp-route-id="@address.Id"
+                                           class="delete-address-btn"
+                                           onclick="return confirm('Are you sure you want to delete this address?');">
+
+                                            🗑 Delete
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="no-address">
+
+                            <div class="no-address-icon">
+                                📍
+                            </div>
+
+                            <h4>No Address Found</h4>
+
+                            <p>
+                                Please add a delivery address before placing your order.
+                            </p>
+
+                            <a asp-controller="Address"
+                               asp-action="Add"
+                               class="add-first-address-btn">
+
+                                + Add Address
+
+                            </a>
+
+                        </div>
+                    }
+
+                </div>
+
+
+                <!-- ================= ORDER ITEMS ================= -->
+
+                <div class="checkout-card">
+
+                    <div class="checkout-card-header">
+
+                        <div>
+
+                            <div class="section-title">
+                                🛍️ Order Items
+                            </div>
+
+                            <div class="section-subtitle">
+                                @Model.Cart.Items.Count item(s)
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="order-items">
+
+                        @foreach (var item in Model.Cart.Items)
+                        {
+                            <div class="order-item">
+
+                                <!-- IMAGE -->
+
+                                <div class="order-image">
+
+                                    <img src="@item.ImageUrl"
+                                         alt="@item.ProductName"
+                                         onerror="this.src='/images/no-image.png';" />
+
+                                </div>
+
+
+                                <!-- DETAILS -->
+
+                                <div class="order-details">
+
+                                    <h4>
+                                        @item.ProductName
+                                    </h4>
+
+                                    <div class="item-price">
+                                        ₹@item.Price.ToString("N2")
+                                    </div>
+
+                                    <div class="item-quantity">
+                                        Quantity: @item.Quantity
+                                    </div>
+
+                                </div>
+
+
+                                <!-- TOTAL -->
+
+                                <div class="item-total">
+
+                                    ₹@item.Total.ToString("N2")
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- RIGHT SIDE - SUMMARY -->
+            <!-- ================================================= -->
+
+            <div class="checkout-right">
+
+                <div class="summary-card">
+
+                    <div class="summary-header">
+
+                        <h3>
+                            Order Summary
+                        </h3>
+
+                    </div>
+
+
+                    <div class="summary-body">
+
+                        <!-- ITEMS -->
+                        @foreach (var item in Model.Cart.Items)
+                        {
+                            <div class="summary-item">
+
+                                <div>
+
+                                    <span>
+                                        @item.ProductName
+                                    </span>
+
+                                    <small>
+                                        × @item.Quantity
+                                    </small>
+
+                                </div>
+
+                                <strong>
+                                    ₹@item.Total.ToString("N2")
+                                </strong>
+
+                            </div>
+                        }
+
+
+                        <hr />
+
+
+                        <!-- SUBTOTAL -->
+
+                        <div class="summary-row">
+
+                            <span>
+                                Subtotal
+                            </span>
+
+                            <strong>
+                                ₹@Model.Cart.GrandTotal.ToString("N2")
+                            </strong>
+
+                        </div>
+
+
+                        <!-- DELIVERY -->
+
+                        <div class="summary-row">
+
+                            <span>
+                                Delivery Charges
+                            </span>
+
+                            <span class="free">
+                                FREE
+                            </span>
+
+                        </div>
+
+
+                        <hr />
+
+
+                        <!-- TOTAL -->
+
+                        <div class="grand-total">
+
+                            <span>
+                                Total Amount
+                            </span>
+
+                            <strong>
+                                ₹@Model.Cart.GrandTotal.ToString("N2")
+                            </strong>
+
+                        </div>
+
+
+                        <!-- PLACE ORDER -->
+                        @if (Model.Addresses != null && Model.Addresses.Any())
+                        {
+                            <button type="submit"
+                                    class="place-order-btn">
+
+                                🛒 Place Order
+
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button"
+                                    class="place-order-btn disabled"
+                                    disabled>
+
+                                Add Address First
+
+                            </button>
+                        }
+
+
+                        <div class="secure-checkout">
+
+                            🔒 Safe & Secure Checkout
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<style>
+
+    /* ================================================= */
+    /* PAGE */
+    /* ================================================= */
+
+    .checkout-page {
+        max-width: 1250px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+
+    /* ================================================= */
+    /* HEADER */
+    /* ================================================= */
+
+    .checkout-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+        .checkout-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .checkout-header p {
+            margin-top: 6px;
+            color: #777;
+        }
+
+
+    .back-cart-btn {
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #ddd;
+        padding: 10px 18px;
+        border-radius: 8px;
+        transition: .2s;
+    }
+
+        .back-cart-btn:hover {
+            background: #f7f7f7;
+        }
+
+
+    /* ================================================= */
+    /* LAYOUT */
+    /* ================================================= */
+
+    .checkout-layout {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 25px;
+        align-items: start;
+    }
+
+
+    /* ================================================= */
+    /* CARDS */
+    /* ================================================= */
+
+    .checkout-card,
+    .summary-card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 16px;
+        box-shadow: 0 5px 22px rgba(0,0,0,.06);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+
+    .checkout-card-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .section-subtitle {
+        color: #888;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+
+    /* ================================================= */
+    /* ADD ADDRESS */
+    /* ================================================= */
+
+    .add-address-btn {
+        text-decoration: none;
+        background: #111;
+        color: white;
+        padding: 9px 15px;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: .2s;
+    }
+
+        .add-address-btn:hover {
+            background: #333;
+            color: white;
+        }
+
+
+    /* ================================================= */
+    /* ADDRESS */
+    /* ================================================= */
+
+    .address-list {
+        padding: 20px;
+    }
+
+
+    .address-wrapper {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        transition: .2s;
+    }
+
+        .address-wrapper:hover {
+            border-color: #999;
+            box-shadow: 0 3px 12px rgba(0,0,0,.05);
+        }
+
+
+    .address-card {
+        display: flex;
+        gap: 14px;
+        padding: 18px;
+        cursor: pointer;
+        margin: 0;
+    }
+
+
+        .address-card input {
+            width: 18px;
+            height: 18px;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+
+    .address-content {
+        flex: 1;
+    }
+
+
+    .address-heading {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 7px;
+    }
+
+
+    .address-name {
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+
+    .default-badge {
+        background: #e8f7ee;
+        color: #16803c;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 8px;
+        border-radius: 5px;
+    }
+
+
+    .address-mobile {
+        font-size: 14px;
+        margin-bottom: 6px;
+        color: #555;
+    }
+
+
+    .address-text {
+        color: #555;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+
+    /* ================================================= */
+    /* ADDRESS ACTIONS */
+    /* ================================================= */
+
+    .address-actions {
+        display: flex;
+        gap: 10px;
+        padding: 0 18px 15px 50px;
+    }
+
+
+    .edit-address-btn,
+    .delete-address-btn {
+        text-decoration: none;
+        font-size: 13px;
+        padding: 7px 12px;
+        border-radius: 6px;
+        transition: .2s;
+    }
+
+
+    .edit-address-btn {
+        color: #0d6efd;
+        background: #eef5ff;
+    }
+
+
+        .edit-address-btn:hover {
+            background: #dceaff;
+            color: #0d6efd;
+        }
+
+
+    .delete-address-btn {
+        color: #dc3545;
+        background: #fff0f1;
+    }
+
+
+        .delete-address-btn:hover {
+            background: #ffe0e3;
+            color: #dc3545;
+        }
+
+
+    /* ================================================= */
+    /* NO ADDRESS */
+    /* ================================================= */
+
+    .no-address {
+        text-align: center;
+        padding: 45px 20px;
+    }
+
+
+    .no-address-icon {
+        font-size: 45px;
+        margin-bottom: 10px;
+    }
+
+
+    .no-address h4 {
+        font-weight: 700;
+    }
+
+
+    .no-address p {
+        color: #777;
+    }
+
+
+    .add-first-address-btn {
+        display: inline-block;
+        text-decoration: none;
+        background: #111;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 8px;
+    }
+
+
+        .add-first-address-btn:hover {
+            color: white;
+            background: #333;
+        }
+
+
+    /* ================================================= */
+    /* ORDER ITEMS */
+    /* ================================================= */
+
+    .order-items {
+        padding: 10px 22px;
+    }
+
+
+    .order-item {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 18px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+
+    .order-image {
+        width: 90px;
+        height: 90px;
+        background: #f7f7f7;
+        border-radius: 10px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+
+        .order-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+        }
+
+
+    .order-details {
+        flex: 1;
+    }
+
+
+        .order-details h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+
+    .item-price {
+        color: #333;
+        font-weight: 600;
+    }
+
+
+    .item-quantity {
+        color: #777;
+        font-size: 13px;
+        margin-top: 5px;
+    }
+
+
+    .item-total {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+
+    /* ================================================= */
+    /* SUMMARY */
+    /* ================================================= */
+
+    .summary-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #eee;
+    }
+
+
+        .summary-header h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+
+    .summary-body {
+        padding: 22px;
+    }
+
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+
+        .summary-item span {
+            max-width: 210px;
+        }
+
+
+        .summary-item small {
+            color: #888;
+            margin-left: 4px;
+        }
+
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 14px 0;
+        color: #555;
+    }
+
+
+    .free {
+        color: #16803c;
+        font-weight: 700;
+    }
+
+
+    .grand-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 19px;
+        font-weight: 700;
+        margin: 20px 0;
+    }
+
+
+    /* ================================================= */
+    /* PLACE ORDER */
+    /* ================================================= */
+
+    .place-order-btn {
+        width: 100%;
+        border: none;
+        background: #111;
+        color: white;
+        padding: 14px;
+        border-radius: 9px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+
+        .place-order-btn:hover {
+            background: #333;
+        }
+
+
+        .place-order-btn.disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+
+    .secure-checkout {
+        text-align: center;
+        color: #777;
+        font-size: 13px;
+        margin-top: 14px;
+    }
+
+
+    /* ================================================= */
+    /* RESPONSIVE */
+    /* ================================================= */
+
+    @@media (max-width: 900px) {
+
+        .checkout-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .checkout-right {
+            order: -1;
+        }
+    }
+
+
+    @@media (max-width: 600px) {
+
+        .checkout-page {
+            margin-top: 25px;
+        }
+
+        .checkout-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+            .checkout-header h1 {
+                font-size: 27px;
+            }
+
+        .checkout-card-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .add-address-btn {
+            align-self: flex-start;
+        }
+
+        .order-item {
+            gap: 10px;
+        }
+
+        .order-image {
+            width: 70px;
+            height: 70px;
+        }
+
+        .item-total {
+            font-size: 14px;
+        }
+
+        .address-actions {
+            padding-left: 50px;
+        }
+    }
+
+</style>

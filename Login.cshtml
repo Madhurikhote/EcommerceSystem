@@ -1,0 +1,562 @@
+﻿@model Ecommerce_MVC.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="auth-page">
+
+    <div class="auth-container">
+
+        <!-- ================= LEFT SIDE ================= -->
+
+        <div class="auth-left">
+
+            <div class="auth-brand">
+                <span class="brand-icon">🛍️</span>
+                <span>Ecommerce</span>
+            </div>
+
+            <div class="auth-left-content">
+
+                <div class="shopping-icon">
+                    🛒
+                </div>
+
+                <h1>
+                    Welcome Back!
+                </h1>
+
+                <p>
+                    Login to your account and continue
+                    shopping your favorite products.
+                </p>
+
+                <div class="auth-features">
+
+                    <div class="feature-item">
+                        <span>✓</span>
+                        <div>
+                            <strong>Easy Shopping</strong>
+                            <small>Discover products easily</small>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <span>✓</span>
+                        <div>
+                            <strong>Secure Account</strong>
+                            <small>Your information is protected</small>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <span>✓</span>
+                        <div>
+                            <strong>Fast Delivery</strong>
+                            <small>Get your orders delivered quickly</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= RIGHT SIDE ================= -->
+
+        <div class="auth-right">
+
+            <div class="login-card">
+
+                <div class="login-header">
+
+                    <div class="login-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Login
+                    </h2>
+
+                    <p>
+                        Enter your details to access your account
+                    </p>
+
+                </div>
+
+
+                <form asp-controller="User"
+                      asp-action="Login"
+                      method="post">
+
+                    <!-- Validation -->
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="validation-summary">
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label asp-for="Email">
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ✉️
+                            </span>
+
+                            <input asp-for="Email"
+                                   class="auth-input"
+                                   placeholder="Enter your email"
+                                   autocomplete="email" />
+
+                        </div>
+
+                        <span asp-validation-for="Email"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label asp-for="Password">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            <input asp-for="Password"
+                                   type="password"
+                                   class="auth-input"
+                                   placeholder="Enter your password"
+                                   autocomplete="current-password" />
+
+                        </div>
+
+                        <span asp-validation-for="Password"
+                              class="field-error">
+                        </span>
+
+                    </div>
+
+
+                    <!-- LOGIN BUTTON -->
+
+                    <button type="submit"
+                            class="login-submit">
+
+                        <span>Login</span>
+                        <span>→</span>
+
+                    </button>
+
+
+                    <!-- REGISTER -->
+
+                    <div class="register-link">
+
+                        <span>
+                            Don't have an account?
+                        </span>
+
+                        <a asp-controller="User"
+                           asp-action="Register">
+
+                            Create Account
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    /* ================= PAGE ================= */
+
+    .auth-page {
+        min-height: calc(100vh - 140px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 45px 20px;
+        background: #f7f8fa;
+    }
+
+
+    /* ================= MAIN CONTAINER ================= */
+
+    .auth-container {
+        width: 100%;
+        max-width: 1050px;
+        min-height: 600px;
+        display: grid;
+        grid-template-columns: 45% 55%;
+        background: white;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.08);
+    }
+
+
+    /* ================= LEFT ================= */
+
+    .auth-left {
+        background: linear-gradient( 145deg, #111827, #1f2937 );
+        color: white;
+        padding: 45px;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .auth-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 23px;
+        font-weight: 700;
+    }
+
+
+    .brand-icon {
+        font-size: 30px;
+    }
+
+
+    .auth-left-content {
+        margin-top: 85px;
+    }
+
+
+    .shopping-icon {
+        width: 75px;
+        height: 75px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 38px;
+        margin-bottom: 25px;
+    }
+
+
+    .auth-left-content h1 {
+        font-size: 38px;
+        font-weight: 750;
+        margin-bottom: 15px;
+    }
+
+
+    .auth-left-content > p {
+        color: #d1d5db;
+        line-height: 1.7;
+        max-width: 380px;
+        font-size: 15px;
+    }
+
+
+    /* ================= FEATURES ================= */
+
+    .auth-features {
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+    }
+
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+
+        .feature-item > span {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+
+        .feature-item strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+
+        .feature-item small {
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+
+    /* ================= RIGHT ================= */
+
+    .auth-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px;
+    }
+
+
+    .login-card {
+        width: 100%;
+        max-width: 430px;
+    }
+
+
+    /* ================= HEADER ================= */
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+
+    .login-icon {
+        width: 62px;
+        height: 62px;
+        margin: 0 auto 18px;
+        border-radius: 18px;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+    }
+
+
+    .login-header h2 {
+        font-size: 30px;
+        font-weight: 750;
+        margin-bottom: 8px;
+    }
+
+
+    .login-header p {
+        color: #777;
+        font-size: 14px;
+        margin: 0;
+    }
+
+
+    /* ================= FORM ================= */
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+
+    .input-wrapper {
+        position: relative;
+    }
+
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        z-index: 2;
+    }
+
+
+    .auth-input {
+        width: 100%;
+        height: 52px;
+        border: 1px solid #ddd;
+        border-radius: 11px;
+        padding: 0 15px 0 45px;
+        font-size: 14px;
+        outline: none;
+        transition: 0.2s;
+        box-sizing: border-box;
+    }
+
+
+        .auth-input:focus {
+            border-color: #111;
+            box-shadow: 0 0 0 3px rgba(17,17,17,0.08);
+        }
+
+
+        .auth-input::placeholder {
+            color: #aaa;
+        }
+
+
+    /* ================= VALIDATION ================= */
+
+    .field-error {
+        display: block;
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+
+    .validation-summary {
+        color: #dc3545;
+        background: #fff5f5;
+        border: 1px solid #ffd6d6;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+
+
+        .validation-summary:empty {
+            display: none;
+        }
+
+
+    /* ================= LOGIN BUTTON ================= */
+
+    .login-submit {
+        width: 100%;
+        height: 52px;
+        border: none;
+        border-radius: 11px;
+        background: #111;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+
+        .login-submit:hover {
+            background: #333;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+
+        .login-submit span:last-child {
+            font-size: 20px;
+        }
+
+
+    /* ================= REGISTER ================= */
+
+    .register-link {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 14px;
+        color: #777;
+    }
+
+
+        .register-link a {
+            color: #111;
+            font-weight: 700;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+
+            .register-link a:hover {
+                text-decoration: underline;
+            }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 850px) {
+
+        .auth-container {
+            grid-template-columns: 1fr;
+            max-width: 600px;
+        }
+
+        .auth-left {
+            display: none;
+        }
+
+        .auth-right {
+            padding: 45px 30px;
+        }
+    }
+
+
+    @@media (max-width: 500px) {
+
+        .auth-page {
+            padding: 25px 15px;
+        }
+
+        .auth-container {
+            border-radius: 18px;
+        }
+
+        .auth-right {
+            padding: 35px 22px;
+        }
+
+        .login-header h2 {
+            font-size: 26px;
+        }
+    }
+
+</style>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
+
+}

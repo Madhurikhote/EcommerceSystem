@@ -1,0 +1,587 @@
+﻿@model Ecommerce_MVC.Models.EditAddressModel
+
+@{
+    ViewData["Title"] = "Edit Address";
+}
+
+<div class="address-form-page">
+
+    <!-- HEADER -->
+
+    <div class="form-page-header">
+
+        <a asp-controller="Address"
+           asp-action="Index"
+           class="back-btn">
+            ← Back to Addresses
+        </a>
+
+        <div class="form-heading">
+
+            <div class="heading-icon">
+                ✏️
+            </div>
+
+            <div>
+
+                <h1>Edit Address</h1>
+
+                <p>
+                    Update your delivery address details
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FORM CARD -->
+
+    <div class="form-card">
+
+        <div class="form-card-header">
+
+            <h2>Update Delivery Details</h2>
+
+            <span class="required-text">
+                * Required fields
+            </span>
+
+        </div>
+
+
+        <form asp-controller="Address"
+              asp-action="Edit"
+              method="post">
+
+            <!-- ADDRESS ID -->
+
+            <input type="hidden"
+                   asp-for="Id" />
+
+
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary">
+            </div>
+
+
+            <!-- PERSONAL -->
+
+            <div class="section-title">
+
+                <span class="section-icon">
+                    👤
+                </span>
+
+                Personal Information
+
+            </div>
+
+
+            <div class="form-row">
+
+                <!-- FULL NAME -->
+
+                <div class="form-group">
+
+                    <label asp-for="FullName">
+                        Full Name
+                        <span>*</span>
+                    </label>
+
+                    <input asp-for="FullName"
+                           class="custom-input"
+                           placeholder="Enter your full name"
+                           autocomplete="name" />
+
+                    <span asp-validation-for="FullName"
+                          class="field-error">
+                    </span>
+
+                </div>
+
+
+                <!-- MOBILE -->
+
+                <div class="form-group">
+
+                    <label asp-for="MobileNumber">
+                        Mobile Number
+                        <span>*</span>
+                    </label>
+
+                    <input asp-for="MobileNumber"
+                           class="custom-input"
+                           placeholder="Enter mobile number"
+                           autocomplete="tel" />
+
+                    <span asp-validation-for="MobileNumber"
+                          class="field-error">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="section-title address-section-title">
+
+                <span class="section-icon">
+                    🏠
+                </span>
+
+                Address Information
+
+            </div>
+
+
+            <!-- ADDRESS LINE 1 -->
+
+            <div class="form-group full-width">
+
+                <label asp-for="AddressLine1">
+                    Address Line 1
+                    <span>*</span>
+                </label>
+
+                <input asp-for="AddressLine1"
+                       class="custom-input"
+                       placeholder="House No, Building, Street"
+                       autocomplete="street-address" />
+
+                <span asp-validation-for="AddressLine1"
+                      class="field-error">
+                </span>
+
+            </div>
+
+
+            <!-- ADDRESS LINE 2 -->
+
+            <div class="form-group full-width">
+
+                <label asp-for="AddressLine2">
+
+                    Address Line 2
+
+                    <small>
+                        (Optional)
+                    </small>
+
+                </label>
+
+                <input asp-for="AddressLine2"
+                       class="custom-input"
+                       placeholder="Area, Landmark, Locality"
+                       autocomplete="address-line2" />
+
+                <span asp-validation-for="AddressLine2"
+                      class="field-error">
+                </span>
+
+            </div>
+
+
+            <!-- CITY + STATE -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label asp-for="City">
+                        City
+                        <span>*</span>
+                    </label>
+
+                    <input asp-for="City"
+                           class="custom-input"
+                           placeholder="Enter city"
+                           autocomplete="address-level2" />
+
+                    <span asp-validation-for="City"
+                          class="field-error">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="State">
+                        State
+                        <span>*</span>
+                    </label>
+
+                    <input asp-for="State"
+                           class="custom-input"
+                           placeholder="Enter state"
+                           autocomplete="address-level1" />
+
+                    <span asp-validation-for="State"
+                          class="field-error">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- POSTAL + COUNTRY -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label asp-for="PostalCode">
+                        Postal Code
+                        <span>*</span>
+                    </label>
+
+                    <input asp-for="PostalCode"
+                           class="custom-input"
+                           placeholder="Enter PIN code"
+                           autocomplete="postal-code" />
+
+                    <span asp-validation-for="PostalCode"
+                          class="field-error">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Country">
+                        Country
+                        <span>*</span>
+                    </label>
+
+                    <input asp-for="Country"
+                           class="custom-input"
+                           placeholder="Enter country"
+                           autocomplete="country-name" />
+
+                    <span asp-validation-for="Country"
+                          class="field-error">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="form-actions">
+
+                <a asp-controller="Address"
+                   asp-action="Index"
+                   class="cancel-btn">
+
+                    Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="save-address-btn">
+
+                    ✓ Update Address
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    /* ================= PAGE ================= */
+
+    .address-form-page {
+        max-width: 950px;
+        margin: 35px auto 60px;
+        padding: 0 20px;
+    }
+
+
+    /* ================= HEADER ================= */
+
+    .form-page-header {
+        margin-bottom: 25px;
+    }
+
+    .back-btn {
+        display: inline-block;
+        text-decoration: none;
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .back-btn:hover {
+        color: #111;
+    }
+
+    .form-heading {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .heading-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 14px;
+        background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+    }
+
+    .form-heading h1 {
+        margin: 0 0 5px;
+        font-size: 30px;
+        font-weight: 700;
+    }
+
+    .form-heading p {
+        margin: 0;
+        color: #777;
+    }
+
+
+    /* ================= CARD ================= */
+
+    .form-card {
+        background: white;
+        border: 1px solid #e8e8e8;
+        border-radius: 16px;
+        box-shadow: 0 6px 25px rgba(0,0,0,.06);
+        overflow: hidden;
+    }
+
+    .form-card-header {
+        padding: 22px 28px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .form-card-header h2 {
+        margin: 0;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .required-text {
+        font-size: 12px;
+        color: #888;
+    }
+
+
+    /* ================= FORM ================= */
+
+    form {
+        padding: 28px;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .address-section-title {
+        margin-top: 30px;
+    }
+
+    .section-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+    }
+
+
+    /* ================= ROW ================= */
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+
+    /* ================= LABEL ================= */
+
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .form-group label span {
+        color: #e53935;
+    }
+
+    .form-group label small {
+        color: #999;
+        font-weight: 400;
+    }
+
+
+    /* ================= INPUT ================= */
+
+    .custom-input {
+        width: 100%;
+        height: 48px;
+        border: 1px solid #ddd;
+        border-radius: 9px;
+        padding: 0 14px;
+        font-size: 14px;
+        outline: none;
+        transition: .2s;
+        box-sizing: border-box;
+    }
+
+    .custom-input:focus {
+        border-color: #111;
+        box-shadow: 0 0 0 3px rgba(0,0,0,.06);
+    }
+
+    .custom-input::placeholder {
+        color: #aaa;
+    }
+
+
+    /* ================= VALIDATION ================= */
+
+    .field-error {
+        display: block;
+        color: #d62828;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .validation-summary {
+        color: #d62828;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+
+    /* ================= ACTIONS ================= */
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 15px;
+        padding-top: 22px;
+        border-top: 1px solid #eee;
+    }
+
+    .cancel-btn,
+    .save-address-btn {
+        padding: 11px 22px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .cancel-btn {
+        border: 1px solid #ddd;
+        color: #333;
+        background: white;
+    }
+
+    .cancel-btn:hover {
+        background: #f6f6f6;
+        color: #111;
+    }
+
+    .save-address-btn {
+        border: none;
+        background: #111;
+        color: white;
+    }
+
+    .save-address-btn:hover {
+        background: #333;
+    }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 700px) {
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .form-card-header {
+            padding: 20px;
+        }
+
+        form {
+            padding: 20px;
+        }
+
+        .form-heading h1 {
+            font-size: 25px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .cancel-btn,
+        .save-address-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+    }
+
+</style>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}s

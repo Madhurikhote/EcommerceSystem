@@ -1,0 +1,369 @@
+﻿@model Ecommerce_MVC.Models.Product
+
+@{
+    ViewData["Title"] = Model?.Name ?? "Product Details";
+}
+
+@if (Model != null)
+{
+    <div class="details-page">
+
+        <!-- Breadcrumb -->
+        <div class="details-breadcrumb">
+            <a asp-controller="Product" asp-action="Index">Home</a>
+            <span>›</span>
+
+            <a asp-controller="Product"
+               asp-action="Search"
+               asp-route-category="@Model.Category">
+                @Model.Category
+            </a>
+
+            <span>›</span>
+
+            <span>@Model.Name</span>
+        </div>
+
+
+        <!-- Main Product Section -->
+        <div class="details-main-card">
+
+            <!-- ================= LEFT IMAGE SECTION ================= -->
+
+            <div class="details-left">
+
+                <div class="details-image-box">
+
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl"
+                             alt="@Model.Name"
+                             class="details-main-image"
+                             onerror="this.src='/images/no-image.png';" />
+                    }
+                    else
+                    {
+                        <img src="/images/no-image.png"
+                             alt="@Model.Name"
+                             class="details-main-image" />
+                    }
+
+                </div>
+
+                <div class="image-caption">
+                    <span>🖼️ Product Image</span>
+                </div>
+
+            </div>
+
+
+            <!-- ================= RIGHT PRODUCT INFO ================= -->
+
+            <div class="details-right">
+
+                <!-- Brand -->
+                @if (!string.IsNullOrEmpty(Model.Brand))
+                {
+                    <div class="details-brand">
+                        @Model.Brand
+                    </div>
+                }
+
+
+                <!-- Product Name -->
+
+                <h1 class="details-title">
+                    @Model.Name
+                </h1>
+
+
+                <!-- Category -->
+
+                <div class="details-category">
+                    @Model.Category
+                </div>
+
+
+                <!-- Rating -->
+
+                <div class="details-rating-section">
+
+                    <span class="details-rating-badge">
+                        ⭐ @Model.Rating
+                    </span>
+
+                    <span class="rating-label">
+                        Customer Rating
+                    </span>
+
+                </div>
+
+
+                <hr class="details-divider" />
+
+
+                <!-- PRICE -->
+
+                <div class="details-price-section">
+
+                    <span class="details-price">
+                        ₹@Model.Price.ToString("N2")
+                    </span>
+
+                    <span class="details-mrp">
+                        MRP
+                    </span>
+
+                </div>
+
+
+                <div class="tax-info">
+                    Inclusive of all taxes
+                </div>
+
+
+                <!-- STOCK -->
+                @if (Model.Stock > 0)
+                {
+                    <div class="details-stock available">
+                        ✓ In Stock
+                    </div>
+                }
+                else
+                {
+                    <div class="details-stock unavailable">
+                        ✕ Currently Out of Stock
+                    </div>
+                }
+
+
+                <!-- DELIVERY INFO -->
+                @if (Model.Stock > 0)
+                {
+                    <div class="delivery-box">
+
+                        <div class="delivery-title">
+                            🚚 Delivery Information
+                        </div>
+
+                        <div class="delivery-item">
+                            ✓ Free delivery available
+                        </div>
+
+                        <div class="delivery-item">
+                            ✓ Secure packaging
+                        </div>
+
+                        <div class="delivery-item">
+                            ✓ Easy returns
+                        </div>
+
+                    </div>
+                }
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="details-description">
+
+                    <h3>Product Description</h3>
+
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <p>
+                            @Model.Description
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text-muted">
+                            No description available for this product.
+                        </p>
+                    }
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                @if (Model.Stock > 0)
+                {
+                    <div class="details-actions">
+
+                        <!-- ADD CART -->
+
+                        <form asp-controller="Cart"
+                              asp-action="AddToCart"
+                              method="post"
+                              class="details-cart-form">
+
+                            <input type="hidden"
+                                   name="productId"
+                                   value="@Model.ProductId" />
+
+                            <input type="hidden"
+                                   name="quantity"
+                                   value="1" />
+
+                            <button type="submit"
+                                    class="details-add-cart">
+
+                                🛒 Add to Cart
+
+                            </button>
+
+                        </form>
+
+
+                        <!-- WISHLIST -->
+
+                        <form asp-controller="Wishlist"
+                              asp-action="Add"
+                              method="post"
+                              class="details-wishlist-form">
+
+                            <input type="hidden"
+                                   name="productId"
+                                   value="@Model.ProductId" />
+
+                            <input type="hidden"
+                                   name="productName"
+                                   value="@Model.Name" />
+
+                            <input type="hidden"
+                                   name="price"
+                                   value="@Model.Price" />
+
+                            <!-- IMPORTANT -->
+                            <input type="hidden"
+                                   name="imageUrl"
+                                   value="@Model.ImageUrl" />
+
+                            <button type="submit"
+                                    class="details-wishlist">
+
+                                ❤️ Add to Wishlist
+
+                            </button>
+
+                        </form>
+
+                    </div>
+                }
+                else
+                {
+                    <button class="details-out-stock"
+                            disabled>
+                        Out of Stock
+                    </button>
+                }
+
+
+                <!-- PRODUCT INFORMATION -->
+
+                <div class="product-extra-info">
+
+                    <div class="extra-info-row">
+                        <span>🏷️ Brand</span>
+                        <strong>@Model.Brand</strong>
+                    </div>
+
+                    <div class="extra-info-row">
+                        <span>📦 Category</span>
+                        <strong>@Model.Category</strong>
+                    </div>
+
+                    <div class="extra-info-row">
+                        <span>📊 Available Stock</span>
+                        <strong>@Model.Stock</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= BOTTOM INFORMATION ================= -->
+
+        <div class="details-bottom-card">
+
+            <h2>Why Shop With Us?</h2>
+
+            <div class="benefits-grid">
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🚚</div>
+                    <div>
+                        <h4>Fast Delivery</h4>
+                        <p>Quick and reliable delivery.</p>
+                    </div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔒</div>
+                    <div>
+                        <h4>Secure Payment</h4>
+                        <p>Your payment information is protected.</p>
+                    </div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">↩️</div>
+                    <div>
+                        <h4>Easy Returns</h4>
+                        <p>Simple and convenient return process.</p>
+                    </div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">⭐</div>
+                    <div>
+                        <h4>Quality Products</h4>
+                        <p>Products selected for our customers.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <div class="details-back-section">
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="back-products">
+
+                ← Continue Shopping
+
+            </a>
+
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="product-not-found">
+
+        <div class="not-found-icon">
+            🛍️
+        </div>
+
+        <h2>Product Not Found</h2>
+
+        <p>
+            Sorry, we couldn't find the product you're looking for.
+        </p>
+
+        <a asp-controller="Product"
+           asp-action="Index"
+           class="back-products">
+            ← Back to Products
+        </a>
+
+    </div>
+}

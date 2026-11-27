@@ -1,0 +1,2091 @@
+﻿@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - ShopEase</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Site CSS -->
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/Ecommerce_MVC.styles.css"
+          asp-append-version="true" />
+
+</head>
+
+
+<body>
+
+
+    <!-- ========================================================= -->
+    <!-- NAVBAR -->
+    <!-- ========================================================= -->
+
+    <header>
+
+        <nav class="navbar navbar-expand-lg shop-navbar">
+
+            <div class="container">
+
+                <!-- ================= LOGO ================= -->
+
+                <a class="navbar-brand shop-logo"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    <span class="logo-icon">
+                        🛍️
+                    </span>
+
+                    <span class="logo-text">
+                        Shop<span>Ease</span>
+                    </span>
+
+                </a>
+
+
+                <!-- ================= MOBILE BUTTON ================= -->
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+
+                    <span class="navbar-toggler-icon"></span>
+
+                </button>
+
+
+                <!-- ================= NAV CONTENT ================= -->
+
+                <div class="collapse navbar-collapse"
+                     id="mainNavbar">
+
+
+                    <!-- ================= LEFT MENU ================= -->
+
+                    <ul class="navbar-nav main-menu mx-lg-auto">
+
+
+                        <!-- HOME -->
+
+                        <li class="nav-item">
+
+                            <a class="nav-link shop-nav-link"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                <span class="nav-icon">
+                                    🏠
+                                </span>
+
+                                Home
+
+                            </a>
+
+                        </li>
+
+
+                        <!-- PRODUCTS -->
+
+                        <li class="nav-item">
+
+                            <a class="nav-link shop-nav-link"
+                               asp-controller="Product"
+                               asp-action="Index">
+
+                                <span class="nav-icon">
+                                    🛍️
+                                </span>
+
+                                Products
+
+                            </a>
+
+                        </li>
+
+
+                        <!-- CATEGORIES -->
+
+                        <li class="nav-item">
+
+                            <a class="nav-link shop-nav-link"
+                               asp-controller="Product"
+                               asp-action="Categories">
+
+                                <span class="nav-icon">
+                                    🏷️
+                                </span>
+
+                                Categories
+
+                            </a>
+
+                        </li>
+
+
+                    </ul>
+
+
+                    <!-- ================= SEARCH ================= -->
+
+                    <div class="navbar-search">
+
+                        <form asp-controller="Product"
+                              asp-action="Search"
+                              method="get">
+
+                            <span class="search-navbar-icon">
+                                🔍
+                            </span>
+
+                            <input type="text"
+                                   name="keyword"
+                                   placeholder="Search products..."
+                                   autocomplete="off" />
+
+                            <button type="submit">
+                                Search
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- ================= RIGHT SIDE ================= -->
+
+                    <div class="navbar-right">
+
+
+                        @if (Context.Session.GetString("JWToken") != null)
+                        {
+
+                            <!-- ================= CART ================= -->
+
+                            <a class="nav-action"
+                               asp-controller="Cart"
+                               asp-action="Index"
+                               title="Shopping Cart">
+
+                                <span class="action-icon">
+                                    🛒
+                                </span>
+
+                                <span class="action-text">
+                                    Cart
+                                </span>
+
+                            </a>
+
+
+                            <!-- ================= WISHLIST ================= -->
+
+                            <a class="nav-action"
+                               asp-controller="Wishlist"
+                               asp-action="Index"
+                               title="Wishlist">
+
+                                <span class="action-icon">
+                                    ❤️
+                                </span>
+
+                                <span class="action-text">
+                                    Wishlist
+                                </span>
+
+                            </a>
+
+
+                            <!-- ================= ACCOUNT ================= -->
+
+                            <div class="dropdown account-dropdown">
+
+                                <button class="account-btn dropdown-toggle"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+
+                                    <span class="account-avatar">
+                                        👤
+                                    </span>
+
+                                    <span class="account-text">
+                                        Account
+                                    </span>
+
+                                </button>
+
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+
+
+                                    <li class="account-menu-title">
+
+                                        <span class="menu-user-icon">
+                                            👤
+                                        </span>
+
+                                        <div>
+
+                                            <strong>
+                                                My Account
+                                            </strong>
+
+                                            <small>
+                                                Welcome back!
+                                            </small>
+
+                                        </div>
+
+                                    </li>
+
+
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+
+
+                                    <!-- ADDRESS -->
+
+                                    <li>
+
+                                        <a class="dropdown-item"
+                                           asp-controller="Address"
+                                           asp-action="Index">
+
+                                            <span>
+                                                📍
+                                            </span>
+
+                                            My Addresses
+
+                                        </a>
+
+                                    </li>
+
+
+                                    <!-- ORDERS -->
+
+                                    <li>
+
+                                        <a class="dropdown-item"
+                                           asp-controller="Order"
+                                           asp-action="MyOrders">
+
+                                            <span>
+                                                📦
+                                            </span>
+
+                                            My Orders
+
+                                        </a>
+
+                                    </li>
+
+
+                                    <!-- CART -->
+
+                                    <li>
+
+                                        <a class="dropdown-item"
+                                           asp-controller="Cart"
+                                           asp-action="Index">
+
+                                            <span>
+                                                🛒
+                                            </span>
+
+                                            My Cart
+
+                                        </a>
+
+                                    </li>
+
+
+                                    <!-- WISHLIST -->
+
+                                    <li>
+
+                                        <a class="dropdown-item"
+                                           asp-controller="Wishlist"
+                                           asp-action="Index">
+
+                                            <span>
+                                                ❤️
+                                            </span>
+
+                                            My Wishlist
+
+                                        </a>
+
+                                    </li>
+
+
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+
+
+                                    <!-- LOGOUT -->
+
+                                    <li>
+
+                                        <a class="dropdown-item logout-item"
+                                           asp-controller="User"
+                                           asp-action="Logout">
+
+                                            <span>
+                                                🚪
+                                            </span>
+
+                                            Logout
+
+                                        </a>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        }
+                        else
+                        {
+
+                            <!-- ================= LOGIN ================= -->
+
+                            <a asp-controller="User"
+                               asp-action="Login"
+                               class="login-btn">
+
+                                Login
+
+                            </a>
+
+
+                            <!-- ================= REGISTER ================= -->
+
+                            <a asp-controller="User"
+                               asp-action="Register"
+                               class="register-btn">
+
+                                Register
+
+                            </a>
+
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- ========================================================= -->
+    <!-- MAIN CONTENT -->
+    <!-- ========================================================= -->
+
+    <main class="main-content">
+
+        @RenderBody()
+
+    </main>
+
+
+
+    <!-- ========================================================= -->
+    <!-- FOOTER -->
+    <!-- ========================================================= -->
+
+    <footer class="shop-footer">
+
+
+        <!-- ================= FOOTER TOP ================= -->
+
+        <div class="container">
+
+            <div class="row gy-5">
+
+
+                <!-- ================= BRAND ================= -->
+
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="footer-brand">
+
+
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           class="footer-logo">
+
+                            <span class="footer-logo-icon">
+                                🛍️
+                            </span>
+
+                            <span>
+                                Shop<span>Ease</span>
+                            </span>
+
+                        </a>
+
+
+                        <p class="footer-description">
+
+                            Your trusted online shopping destination
+                            for quality products, great prices and
+                            a smooth shopping experience.
+
+                        </p>
+
+
+                        <!-- SOCIAL -->
+
+                        <div class="footer-social">
+
+
+                            <a href="#"
+                               class="social-btn"
+                               title="Facebook">
+
+                                f
+
+                            </a>
+
+
+                            <a href="#"
+                               class="social-btn"
+                               title="Instagram">
+
+                                ◎
+
+                            </a>
+
+
+                            <a href="#"
+                               class="social-btn"
+                               title="Twitter">
+
+                                𝕏
+
+                            </a>
+
+
+                            <a href="#"
+                               class="social-btn"
+                               title="LinkedIn">
+
+                                in
+
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================= QUICK LINKS ================= -->
+
+                <div class="col-lg-2 col-md-6">
+
+                    <h6 class="footer-heading">
+                        Quick Links
+                    </h6>
+
+
+                    <a asp-controller="Home"
+                       asp-action="Index">
+
+                        Home
+
+                    </a>
+
+
+                    <a asp-controller="Product"
+                       asp-action="Index">
+
+                        Products
+
+                    </a>
+
+
+                    <a asp-controller="Product"
+                       asp-action="Categories">
+
+                        Categories
+
+                    </a>
+
+
+                    <a asp-controller="Product"
+                       asp-action="Search">
+
+                        Search Products
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- ================= CUSTOMER ================= -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <h6 class="footer-heading">
+                        Customer
+                    </h6>
+
+
+                    @if (Context.Session.GetString("JWToken") != null)
+                    {
+
+                        <a asp-controller="Wishlist"
+                           asp-action="Index">
+
+                            ❤️ Wishlist
+
+                        </a>
+
+
+                        <a asp-controller="Cart"
+                           asp-action="Index">
+
+                            🛒 My Cart
+
+                        </a>
+
+
+                        <a asp-controller="Order"
+                           asp-action="MyOrders">
+
+                            📦 My Orders
+
+                        </a>
+
+
+                        <a asp-controller="Address"
+                           asp-action="Index">
+
+                            📍 My Addresses
+
+                        </a>
+
+                    }
+                    else
+                    {
+
+                        <a asp-controller="User"
+                           asp-action="Login">
+
+                            Login
+
+                        </a>
+
+
+                        <a asp-controller="User"
+                           asp-action="Register">
+
+                            Create Account
+
+                        </a>
+
+                    }
+
+                </div>
+
+
+
+                <!-- ================= CONTACT ================= -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <h6 class="footer-heading">
+                        Contact Us
+                    </h6>
+
+
+                    <div class="contact-item">
+
+                        <span class="contact-icon">
+                            📧
+                        </span>
+
+                        <span>
+                            support@shopease.com
+                        </span>
+
+                    </div>
+
+
+                    <div class="contact-item">
+
+                        <span class="contact-icon">
+                            📞
+                        </span>
+
+                        <span>
+                            +91 98765 43210
+                        </span>
+
+                    </div>
+
+
+                    <div class="contact-item">
+
+                        <span class="contact-icon">
+                            📍
+                        </span>
+
+                        <span>
+                            Pune, Maharashtra
+                        </span>
+
+                    </div>
+
+
+                    <div class="contact-item">
+
+                        <span class="contact-icon">
+                            🕐
+                        </span>
+
+                        <span>
+                            Mon - Sat : 9 AM - 7 PM
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- FOOTER DIVIDER -->
+            <!-- ================================================= -->
+
+            <div class="footer-divider"></div>
+
+
+
+            <!-- ================================================= -->
+            <!-- PAYMENT / TRUST -->
+            <!-- ================================================= -->
+
+            <div class="footer-trust">
+
+
+                <div class="trust-item">
+
+                    <span>
+                        🔒
+                    </span>
+
+                    Secure Payments
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <span>
+                        🚚
+                    </span>
+
+                    Fast Delivery
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <span>
+                        🔄
+                    </span>
+
+                    Easy Returns
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <span>
+                        ⭐
+                    </span>
+
+                    Quality Products
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- BOTTOM -->
+            <!-- ================================================= -->
+
+            <div class="footer-bottom">
+
+
+                <span>
+
+                    © 2026
+                    <strong>ShopEase</strong>.
+                    All Rights Reserved.
+
+                </span>
+
+
+                <span>
+
+                    Made with
+                    ❤️
+                    for online shoppers
+
+                </span>
+
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- ========================================================= -->
+    <!-- SCRIPTS -->
+    <!-- ========================================================= -->
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
+
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false
+    )
+
+
+</body>
+
+</html>
+
+
+
+<!-- ============================================================= -->
+<!-- CUSTOM STYLE -->
+<!-- ============================================================= -->
+
+<style>
+
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+
+    body {
+        margin: 0;
+
+        background: #f7f8fa;
+
+        color: #222;
+
+        font-family:
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Arial,
+            sans-serif;
+    }
+
+
+    .main-content {
+        min-height: 65vh;
+    }
+
+
+
+    /* =========================================================
+       NAVBAR
+       ========================================================= */
+
+    .shop-navbar {
+
+        background: rgba(255,255,255,0.97);
+
+        border-bottom: 1px solid #eeeeee;
+
+        min-height: 76px;
+
+        box-shadow:
+            0 3px 20px rgba(0,0,0,0.06);
+
+        position: sticky;
+
+        top: 0;
+
+        z-index: 1000;
+
+        backdrop-filter: blur(12px);
+    }
+
+
+    .shop-navbar .container {
+
+        min-height: 76px;
+    }
+
+
+
+    /* =========================================================
+       LOGO
+       ========================================================= */
+
+    .shop-logo {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+        font-size: 24px;
+
+        font-weight: 800;
+
+        letter-spacing: -0.6px;
+
+        color: #111 !important;
+
+        text-decoration: none;
+
+        transition: 0.25s ease;
+    }
+
+
+    .shop-logo:hover {
+
+        color: #111 !important;
+
+        transform: translateY(-1px);
+    }
+
+
+    .logo-icon {
+
+        width: 43px;
+
+        height: 43px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: #111;
+
+        border-radius: 12px;
+
+        font-size: 21px;
+
+        box-shadow:
+            0 6px 16px rgba(0,0,0,0.16);
+
+        transition: 0.25s ease;
+    }
+
+
+    .shop-logo:hover .logo-icon {
+
+        transform:
+            rotate(-5deg)
+            scale(1.05);
+    }
+
+
+    .logo-text span {
+
+        color: #777;
+    }
+
+
+
+    /* =========================================================
+       NAV MENU
+       ========================================================= */
+
+    .main-menu {
+
+        gap: 3px;
+    }
+
+
+    .shop-nav-link {
+
+        position: relative;
+
+        color: #555 !important;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        padding:
+            28px 13px !important;
+
+        transition:
+            color .25s ease,
+            background .25s ease;
+    }
+
+
+    .shop-nav-link:hover {
+
+        color: #111 !important;
+    }
+
+
+    .shop-nav-link::after {
+
+        content: "";
+
+        position: absolute;
+
+        left: 13px;
+
+        right: 13px;
+
+        bottom: 16px;
+
+        height: 2px;
+
+        background: #111;
+
+        border-radius: 10px;
+
+        transform: scaleX(0);
+
+        transition: transform .25s ease;
+    }
+
+
+    .shop-nav-link:hover::after {
+
+        transform: scaleX(1);
+    }
+
+
+    .nav-icon {
+
+        font-size: 13px;
+
+        margin-right: 3px;
+    }
+
+
+
+    /* =========================================================
+       SEARCH
+       ========================================================= */
+
+    .navbar-search {
+
+        margin-left: 10px;
+
+        margin-right: 14px;
+    }
+
+
+    .navbar-search form {
+
+        height: 43px;
+
+        width: 250px;
+
+        display: flex;
+
+        align-items: center;
+
+        background: #f6f6f6;
+
+        border: 1px solid #e5e5e5;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+
+        transition: .25s ease;
+    }
+
+
+    .navbar-search form:focus-within {
+
+        background: white;
+
+        border-color: #bbbbbb;
+
+        box-shadow:
+            0 0 0 3px rgba(0,0,0,.04);
+    }
+
+
+    .search-navbar-icon {
+
+        padding-left: 12px;
+
+        font-size: 15px;
+    }
+
+
+    .navbar-search input {
+
+        flex: 1;
+
+        min-width: 0;
+
+        height: 100%;
+
+        border: none;
+
+        outline: none;
+
+        background: transparent;
+
+        padding: 0 9px;
+
+        font-size: 13px;
+
+        color: #222;
+    }
+
+
+    .navbar-search input::placeholder {
+
+        color: #999;
+    }
+
+
+    .navbar-search button {
+
+        height: 100%;
+
+        border: none;
+
+        background: #111;
+
+        color: white;
+
+        padding: 0 12px;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition: .2s ease;
+    }
+
+
+    .navbar-search button:hover {
+
+        background: #333;
+    }
+
+
+
+    /* =========================================================
+       RIGHT NAVBAR
+       ========================================================= */
+
+    .navbar-right {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 5px;
+    }
+
+
+    .nav-action {
+
+        position: relative;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 4px;
+
+        padding: 8px 9px;
+
+        border-radius: 9px;
+
+        color: #444 !important;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        transition: .2s ease;
+    }
+
+
+    .nav-action:hover {
+
+        color: #111 !important;
+
+        background: #f5f5f5;
+    }
+
+
+    .action-icon {
+
+        font-size: 18px;
+    }
+
+
+    .action-text {
+
+        font-size: 12px;
+    }
+
+
+
+    /* =========================================================
+       LOGIN / REGISTER
+       ========================================================= */
+
+    .login-btn {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-width: 72px;
+
+        padding: 9px 15px;
+
+        border-radius: 9px;
+
+        border: 1px solid #dddddd;
+
+        background: white;
+
+        color: #222 !important;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-decoration: none;
+
+        transition: .25s ease;
+    }
+
+
+    .login-btn:hover {
+
+        background: #f5f5f5;
+
+        border-color: #cfcfcf;
+
+        transform: translateY(-1px);
+    }
+
+
+    .register-btn {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-width: 82px;
+
+        padding: 10px 15px;
+
+        border-radius: 9px;
+
+        background: #111;
+
+        color: white !important;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        text-decoration: none;
+
+        box-shadow:
+            0 5px 14px rgba(0,0,0,.14);
+
+        transition: .25s ease;
+    }
+
+
+    .register-btn:hover {
+
+        background: #333;
+
+        color: white !important;
+
+        transform: translateY(-2px);
+    }
+
+
+
+    /* =========================================================
+       ACCOUNT
+       ========================================================= */
+
+    .account-dropdown {
+
+        margin-left: 3px;
+    }
+
+
+    .account-btn {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 5px;
+
+        padding: 8px 12px;
+
+        border-radius: 9px;
+
+        border: 1px solid #dddddd;
+
+        background: white;
+
+        color: #222;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        transition: .25s ease;
+    }
+
+
+    .account-btn:hover {
+
+        background: #f6f6f6;
+
+        border-color: #ccc;
+    }
+
+
+    .account-avatar {
+
+        font-size: 17px;
+    }
+
+
+
+    /* =========================================================
+       DROPDOWN
+       ========================================================= */
+
+    .dropdown-menu {
+
+        margin-top: 12px !important;
+
+        min-width: 225px;
+
+        padding: 8px;
+
+        border:
+            1px solid #eeeeee;
+
+        border-radius: 13px;
+
+        box-shadow:
+            0 15px 40px rgba(0,0,0,.13);
+    }
+
+
+    .account-menu-title {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 10px 11px;
+    }
+
+
+    .menu-user-icon {
+
+        width: 36px;
+
+        height: 36px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: #f3f3f3;
+
+        border-radius: 9px;
+    }
+
+
+    .account-menu-title strong {
+
+        display: block;
+
+        font-size: 13px;
+    }
+
+
+    .account-menu-title small {
+
+        display: block;
+
+        color: #999;
+
+        margin-top: 2px;
+
+        font-size: 11px;
+    }
+
+
+    .dropdown-item {
+
+        display: flex !important;
+
+        align-items: center;
+
+        gap: 9px;
+
+        padding: 10px 12px;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+
+        transition: .2s ease;
+    }
+
+
+    .dropdown-item:hover {
+
+        background: #f5f5f5;
+    }
+
+
+    .logout-item {
+
+        color: #dc3545 !important;
+    }
+
+
+    .logout-item:hover {
+
+        background: #fff0f0;
+
+        color: #c82333 !important;
+    }
+
+
+
+    /* =========================================================
+       MOBILE NAV BUTTON
+       ========================================================= */
+
+    .navbar-toggler {
+
+        border: 1px solid #dddddd;
+
+        border-radius: 9px;
+
+        padding: 7px 10px;
+    }
+
+
+    .navbar-toggler:focus {
+
+        box-shadow: none;
+    }
+
+
+    .navbar-toggler-icon {
+
+        width: 21px;
+
+        height: 21px;
+    }
+
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .shop-footer {
+
+        position: relative;
+
+        background:
+            linear-gradient(
+                180deg,
+                #171717 0%,
+                #0b0b0b 100%
+            );
+
+        color: #ddd;
+
+        margin-top: 80px;
+
+        padding:
+            65px 0 22px;
+
+        overflow: hidden;
+    }
+
+
+    .shop-footer::before {
+
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+
+        left: 0;
+
+        right: 0;
+
+        height: 3px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #111,
+                #777,
+                #111
+            );
+    }
+
+
+
+    /* =========================================================
+       FOOTER LOGO
+       ========================================================= */
+
+    .footer-logo {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+        color: white !important;
+
+        font-size: 24px;
+
+        font-weight: 800;
+
+        text-decoration: none !important;
+
+        margin-bottom: 17px;
+    }
+
+
+    .footer-logo:hover {
+
+        transform: none !important;
+
+        padding-left: 0 !important;
+    }
+
+
+    .footer-logo span span {
+
+        color: #888;
+    }
+
+
+    .footer-logo-icon {
+
+        width: 41px;
+
+        height: 41px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: white;
+
+        border-radius: 11px;
+
+        font-size: 20px;
+    }
+
+
+    .footer-description {
+
+        max-width: 370px;
+
+        color: #999 !important;
+
+        line-height: 1.8;
+
+        font-size: 14px;
+    }
+
+
+
+    /* =========================================================
+       SOCIAL
+       ========================================================= */
+
+    .footer-social {
+
+        display: flex;
+
+        gap: 8px;
+
+        margin-top: 20px;
+    }
+
+
+    .social-btn {
+
+        width: 35px;
+
+        height: 35px;
+
+        display: flex !important;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: #222;
+
+        border: 1px solid #333;
+
+        border-radius: 9px;
+
+        color: #bbb !important;
+
+        font-size: 13px !important;
+
+        font-weight: 700;
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+
+        transition: .25s ease;
+    }
+
+
+    .social-btn:hover {
+
+        background: white;
+
+        color: #111 !important;
+
+        border-color: white;
+
+        transform: translateY(-3px) !important;
+    }
+
+
+
+    /* =========================================================
+       FOOTER HEADINGS
+       ========================================================= */
+
+    .footer-heading {
+
+        position: relative;
+
+        color: white;
+
+        font-size: 15px;
+
+        font-weight: 700;
+
+        margin-bottom: 22px;
+
+        padding-bottom: 10px;
+    }
+
+
+    .footer-heading::after {
+
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+
+        bottom: 0;
+
+        width: 30px;
+
+        height: 2px;
+
+        background: #777;
+
+        border-radius: 10px;
+    }
+
+
+
+    /* =========================================================
+       FOOTER LINKS
+       ========================================================= */
+
+    .shop-footer a {
+
+        display: block;
+
+        width: fit-content;
+
+        color: #999;
+
+        text-decoration: none;
+
+        margin-bottom: 12px;
+
+        font-size: 13px;
+
+        transition:
+            color .2s ease,
+            transform .2s ease;
+    }
+
+
+    .shop-footer a:hover {
+
+        color: white;
+
+        transform: translateX(5px);
+    }
+
+
+
+    /* =========================================================
+       CONTACT
+       ========================================================= */
+
+    .contact-item {
+
+        display: flex;
+
+        align-items: flex-start;
+
+        gap: 10px;
+
+        color: #999;
+
+        font-size: 13px;
+
+        margin-bottom: 13px;
+
+        line-height: 1.5;
+    }
+
+
+    .contact-icon {
+
+        width: 23px;
+
+        flex-shrink: 0;
+
+        font-size: 15px;
+    }
+
+
+
+    /* =========================================================
+       FOOTER DIVIDER
+       ========================================================= */
+
+    .footer-divider {
+
+        height: 1px;
+
+        background: #292929;
+
+        margin:
+            40px 0 22px;
+    }
+
+
+
+    /* =========================================================
+       TRUST
+       ========================================================= */
+
+    .footer-trust {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 35px;
+
+        padding-bottom: 22px;
+    }
+
+
+    .trust-item {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 7px;
+
+        color: #888;
+
+        font-size: 12px;
+
+        font-weight: 600;
+    }
+
+
+    .trust-item span {
+
+        font-size: 16px;
+    }
+
+
+
+    /* =========================================================
+       FOOTER BOTTOM
+       ========================================================= */
+
+    .footer-bottom {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        padding-top: 20px;
+
+        border-top: 1px solid #222;
+
+        color: #666;
+
+        font-size: 12px;
+    }
+
+
+    .footer-bottom strong {
+
+        color: #aaa;
+    }
+
+
+
+    /* =========================================================
+       LARGE TABLET
+       ========================================================= */
+
+    @@media (max-width: 1200px) {
+
+        .navbar-search form {
+
+            width: 200px;
+        }
+
+
+        .shop-nav-link {
+
+            padding-left: 8px !important;
+
+            padding-right: 8px !important;
+        }
+
+
+        .action-text {
+
+            display: none;
+        }
+
+    }
+
+
+
+    /* =========================================================
+       TABLET
+       ========================================================= */
+
+    @@media (max-width: 991px) {
+
+
+        .shop-navbar {
+
+            min-height: 68px;
+        }
+
+
+        .shop-navbar .container {
+
+            min-height: 68px;
+        }
+
+
+        .navbar-collapse {
+
+            background: white;
+
+            margin-top: 10px;
+
+            padding: 12px;
+
+            border:
+                1px solid #eeeeee;
+
+            border-radius: 13px;
+
+            box-shadow:
+                0 12px 30px rgba(0,0,0,.08);
+        }
+
+
+        .main-menu {
+
+            gap: 2px;
+
+            align-items: stretch !important;
+        }
+
+
+        .shop-nav-link {
+
+            padding: 12px !important;
+
+            border-radius: 8px;
+        }
+
+
+        .shop-nav-link:hover {
+
+            background: #f5f5f5;
+        }
+
+
+        .shop-nav-link::after {
+
+            display: none;
+        }
+
+
+        .navbar-search {
+
+            margin:
+                12px 0;
+
+        }
+
+
+        .navbar-search form {
+
+            width: 100%;
+        }
+
+
+        .navbar-right {
+
+            padding-top: 12px;
+
+            border-top:
+                1px solid #eeeeee;
+
+            justify-content:
+                flex-start;
+
+            flex-wrap: wrap;
+        }
+
+
+        .nav-action {
+
+            background: #f7f7f7;
+        }
+
+
+        .account-dropdown {
+
+            margin-left: 0;
+        }
+
+    }
+
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @@media (max-width: 600px) {
+
+
+        .shop-logo {
+
+            font-size: 20px;
+        }
+
+
+        .logo-icon {
+
+            width: 38px;
+
+            height: 38px;
+
+            font-size: 19px;
+        }
+
+
+        .navbar-right {
+
+            flex-direction: column;
+
+            align-items: stretch;
+
+            width: 100%;
+        }
+
+
+        .nav-action {
+
+            justify-content: center;
+
+            width: 100%;
+        }
+
+
+        .account-dropdown {
+
+            width: 100%;
+        }
+
+
+        .account-btn {
+
+            width: 100%;
+
+            justify-content: center;
+        }
+
+
+        .login-btn,
+        .register-btn {
+
+            width: 100%;
+
+            justify-content: center;
+        }
+
+
+        .dropdown-menu {
+
+            width: 100%;
+        }
+
+
+        /* FOOTER */
+
+        .shop-footer {
+
+            margin-top: 55px;
+
+            padding:
+                50px 0 20px;
+        }
+
+
+        .footer-trust {
+
+            flex-direction: column;
+
+            gap: 15px;
+        }
+
+
+        .footer-bottom {
+
+            flex-direction: column;
+
+            gap: 10px;
+
+            text-align: center;
+        }
+
+    }
+
+</style>
